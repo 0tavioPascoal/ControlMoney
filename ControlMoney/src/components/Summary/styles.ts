@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import { SummaryCardProps } from "../../interfaces/SummaryCardProps";
 
 export const SummaryContainer = styled.section`
   width: 100%;
@@ -12,10 +13,6 @@ export const SummaryContainer = styled.section`
 
   margin-top: -5rem;
 ;`
-
-interface SummaryCardProps{
-  variant?: 'green'
-}
 
 export const SummaryCard = styled.div<SummaryCardProps>`
   background-color: ${props => props.theme['gray-600']};
