@@ -4,5 +4,5 @@ export interface TransactionProps{
   type: 'income' | 'outcome',
   price: number,
   category: string,
-  createdAT: string,
+  createdAt: string,
 }
