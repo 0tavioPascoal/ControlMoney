@@ -1,9 +1,23 @@
+import { useEffect, useState } from "react";
 import { Header } from "../../components/Header";
 import { Summary } from "../../components/Summary";
 import { SearchForm } from "./components/SearchForm";
 import { PriceHighlight, TransactionsContainer, TransactionsTable } from "./styles";
+import { TransactionProps } from "../../interfaces/TransactionProps";
 
 export function Transactions() {
+const [transactions, setTransactions] = useState<TransactionProps[]>([])
+
+  useEffect(()=> {
+      async function loadTransactions(){
+        const res = await fetch('http://localhost:3333/transactions')
+        const data = await res.json()
+          setTransactions(data)
+      }
+
+      loadTransactions()
+  }, [])
+
   return (
     <div>
       <Header />
@@ -13,26 +27,20 @@ export function Transactions() {
         <SearchForm/>
         <TransactionsTable>
           <tbody>
-            <tr>
-              <td width="50%">Desenvolvimento de Site</td>
-              <td>
-                <PriceHighlight variant="income">
-                R$ 12.000,00
-                </PriceHighlight>
-               </td>
-              <td>Vendas</td>
-              <td>13/04/2024</td>
-            </tr>
-            <tr>
-              <td width="50%">Hamburguer</td>
-              <td>
-                <PriceHighlight variant="outcome">
-                  - R$ 59,00
-                </PriceHighlight>
-              </td>
-              <td>Alimento</td>
-              <td>10/04/2024</td>
-            </tr>
+            {transactions.map(transaction => {
+              return(
+                <tr key={transaction.id}>
+                <td width="50%">{transaction.description}</td>
+                <td>
+                  <PriceHighlight variant={transaction.type}>
+                  {transaction.price}
+                  </PriceHighlight>
+                 </td>
+                <td>{transaction.category}</td>
+                <td>{transaction.createdAT}</td>
+              </tr>
+              )
+            })}
           </tbody>
         </TransactionsTable>
       </TransactionsContainer>
